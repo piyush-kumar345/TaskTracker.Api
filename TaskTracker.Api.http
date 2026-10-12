@@ -4,3 +4,14 @@ GET {{TaskTracker.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+### Get all tasks
+GET {{TaskTracker.Api_HostAddress}}/api/tasks
+Accept: application/json
+
+### Get task 2
+GET {{TaskTracker.Api_HostAddress}}/api/tasks/2
+Accept: application/json
+
+### Get task that does not exist
+GET {{TaskTracker.Api_HostAddress}}/api/tasks/99
+Accept: application/json
