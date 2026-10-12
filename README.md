@@ -16,9 +16,9 @@ A REST API for managing tasks, built with ASP.NET Core on .NET 10.
 ```
    dotnet run
 ```
-4. Use the `TaskTracker.Api.http` file to test the endpoints.
+4. Use the `TaskTracker.Api.http` file to test the endpoints. Note: data is stored in memory and resets when the app restarts.
 
-## Endpoints (planned)
+## Endpoints
 | Method | Route | Description |
 |--------|-------|-------------|
 | GET | /api/tasks | Get all tasks |
@@ -29,7 +29,7 @@ A REST API for managing tasks, built with ASP.NET Core on .NET 10.
 
 ## Roadmap
 - [x] Project setup
-- [ ] CRUD endpoints with in-memory data
+- [x] CRUD endpoints with in-memory data
 - [ ] DTOs and validation
 - [ ] Service layer + dependency injection
 - [ ] EF Core + SQL Server
