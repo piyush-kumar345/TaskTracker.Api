@@ -41,13 +41,21 @@ DELETE {{TaskTracker.Api_HostAddress}}/api/tasks/3
 ### Delete task that does not exist
 DELETE {{TaskTracker.Api_HostAddress}}/api/tasks/99
 
-### Create task (client sends fields it should NOT control)
+### Create valid task
 POST {{TaskTracker.Api_HostAddress}}/api/tasks
 Content-Type: application/json
 
 {
   "id": 999,
-  "title": "",
-  "isCompleted": true,
-  "createdAt": "2001-01-01T00:00:00Z"
+  "title": "Learn DTOs",
+  "isCompleted": true
+}
+
+### Update with invalid title
+PUT {{TaskTracker.Api_HostAddress}}/api/tasks/2
+Content-Type: application/json
+
+{
+  "title": "ab",
+  "isCompleted": true
 }

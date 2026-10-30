@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskTracker.Api.DTOs;
 using TaskTracker.Api.Models;
 
 namespace TaskTracker.Api.Controllers;
@@ -16,46 +17,51 @@ public class TasksController : ControllerBase
 
     // GET api/tasks
     [HttpGet]
-    public ActionResult<List<TaskItem>> GetAll()
+    public ActionResult<List<TaskDto>> GetAll()
     {
-        return Ok(_tasks);
+        return Ok(_tasks.Select(MapToDto).ToList());
     }
 
     // GET api/tasks/2
     [HttpGet("{id}")]
-    public ActionResult<TaskItem> GetById(int id)
+    public ActionResult<TaskDto> GetById(int id)
     {
         var task = _tasks.FirstOrDefault(t => t.Id == id);
 
         if (task is null)
             return NotFound();
 
-        return Ok(task);
+        return Ok(MapToDto(task));
     }
 
     // POST api/tasks
     [HttpPost]
-    public ActionResult<TaskItem> Create(TaskItem newTask)
+    public ActionResult<TaskDto> Create(CreateTaskDto dto)
     {
-        newTask.Id = _tasks.Count == 0 ? 1 : _tasks.Max(t => t.Id) + 1;
-        newTask.CreatedAt = DateTime.UtcNow;
-        _tasks.Add(newTask);
+        var task = new TaskItem
+        {
+            Id = _tasks.Count == 0 ? 1 : _tasks.Max(t => t.Id) + 1,
+            Title = dto.Title,
+            Description = dto.Description
+        };
 
-        return CreatedAtAction(nameof(GetById), new { id = newTask.Id }, newTask);
+        _tasks.Add(task);
+
+        return CreatedAtAction(nameof(GetById), new { id = task.Id }, MapToDto(task));
     }
 
     // PUT api/tasks/2
     [HttpPut("{id}")]
-    public IActionResult Update(int id, TaskItem updatedTask)
+    public IActionResult Update(int id, UpdateTaskDto dto)
     {
         var task = _tasks.FirstOrDefault(t => t.Id == id);
 
         if (task is null)
             return NotFound();
 
-        task.Title = updatedTask.Title;
-        task.Description = updatedTask.Description;
-        task.IsCompleted = updatedTask.IsCompleted;
+        task.Title = dto.Title;
+        task.Description = dto.Description;
+        task.IsCompleted = dto.IsCompleted;
 
         return NoContent();
     }
@@ -72,5 +78,17 @@ public class TasksController : ControllerBase
         _tasks.Remove(task);
 
         return NoContent();
+    }
+
+    private static TaskDto MapToDto(TaskItem task)
+    {
+        return new TaskDto
+        {
+            Id = task.Id,
+            Title = task.Title,     
+            Description = task.Description,
+            IsCompleted = task.IsCompleted,
+            CreatedAt = task.CreatedAt
+        };
     }
 }
