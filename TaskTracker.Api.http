@@ -59,3 +59,8 @@ Content-Type: application/json
   "title": "ab",
   "isCompleted": true
 }
+
+
+### Test global exception handler
+GET {{TaskTracker.Api_HostAddress}}/api/tasks/crash
+Accept: application/json
