@@ -1,6 +1,7 @@
 using TaskTracker.Api.Services;
 //using TaskTracker.Api.Services;
 using TaskTracker.Api.ExceptionHandling;
+using TaskTracker.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 app.UseExceptionHandler();
+app.UseMiddleware<RequestTimingMiddleware>();   
 
 
 // Configure the HTTP request pipeline.
